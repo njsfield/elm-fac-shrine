@@ -1,0 +1,83 @@
+/* Base */
+body {
+    background: black;
+}
+
+.pre-container {
+    display: block;
+    margin: 0 auto;
+    overflow: hidden;
+    width: 100%;
+    max-width: 100rem;
+    height: 100vh;
+    position: relative;
+    padding: 0;
+}
+
+pre {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%); /* Centered effect for mobile */
+    display: block;
+    font-family: 'Inconsolata', monospace;
+    font-size: 1em;
+    white-space: pre-line;
+    width: 69rem;
+    height: 52rem;
+    text-align: left;
+    margin: 0;
+}
+
+
+/* Colors */
+
+.white {
+    color: #FFFFFF;
+    font-weight: bold;
+}
+.black {
+    color: #000000;
+}
+.grey {
+    color: #333333;
+}
+.lightgrey {
+    color: #777777;
+}
+.darkgreen {
+    color: #388E38;
+}
+.midgreen {
+    color: #44CA44;
+}
+.leafgreen {
+    color: #3FCFCF;
+}
+
+/* Glow in animation */
+.black,
+.grey,
+.darkgreen,
+.midgreen,
+.leafgreen,
+.lightgrey,
+.white {
+    -webkit-animation-name: glow-in;
+    animation-name: glow-in;
+    -webkit-animation-duration: 2s;
+    animation-duration: 2s;
+    -webkit-animation-direction: forwards;
+    animation-direction: forwards;
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+}
+
+@-webkit-keyframes glow-in {
+    from {color: #333333;}
+}
+
+@keyframes glow-in {
+    from {color: #333333;}
+}
