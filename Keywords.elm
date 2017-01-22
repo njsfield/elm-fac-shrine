@@ -1,8 +1,8 @@
-module Keywords exposing (keywords)
+module Keywords exposing (list)
 
 
-keywords : List String
-keywords =
+list : List String
+list =
     [ "founders"
     , "coders"
     , "opensource"
