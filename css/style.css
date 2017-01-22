@@ -2,7 +2,9 @@
 body {
     background: black;
 }
-
+p {
+    line-height: .3rem;
+}
 .pre-container {
     display: block;
     margin: 0 auto;
