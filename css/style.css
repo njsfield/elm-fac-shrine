@@ -3,7 +3,7 @@ body {
     background: black;
 }
 p {
-    line-height: .3rem;
+    line-height: .1rem;
 }
 .pre-container {
     display: block;
