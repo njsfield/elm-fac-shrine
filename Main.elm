@@ -56,6 +56,15 @@ dividestring chars string =
         List.map .match (Regex.find Regex.All (Regex.regex reg) string)
 
 
+findfirst : String -> String -> String
+findfirst str reg =
+    let
+        res =
+            List.map .match (Regex.find (Regex.AtMost 1) (Regex.regex reg) str)
+    in
+        String.concat res
+
+
 reduceby : Int -> List String -> List String
 reduceby num list =
     let
