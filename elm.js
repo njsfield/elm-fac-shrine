@@ -8348,7 +8348,7 @@ var _user$project$Asciimap$asciimap = {
 																						_0: '51 grey, 13 white, 51 grey',
 																						_1: {
 																							ctor: '::',
-																							_0: '52 grey, 6 black, 4 grey 1 black, 52 grey',
+																							_0: '52 grey, 6 black, 4 grey, 1 black, 52 grey',
 																							_1: {
 																								ctor: '::',
 																								_0: '52 grey, 1 lightgrey, 6 black, 1 grey, 3 lightgrey, 52 grey',

@@ -39,7 +39,7 @@ asciimap =
         , "50 grey, 8 white, 1 darkgreen, 6 white, 50 grey"
         , "50 grey, 3 white, 10 black, 2 white, 50 grey"
         , "51 grey, 13 white, 51 grey"
-        , "52 grey, 6 black, 4 grey 1 black, 52 grey"
+        , "52 grey, 6 black, 4 grey, 1 black, 52 grey"
         , "52 grey, 1 lightgrey, 6 black, 1 grey, 3 lightgrey, 52 grey"
         , "52 grey, 8 black, 4 grey, 1 black, 50 grey"
         , "52 grey, 1 lightgrey, 6 black, 1 grey, 3 lightgrey, 52 grey"
