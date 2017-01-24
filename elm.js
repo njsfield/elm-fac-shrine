@@ -8646,7 +8646,9 @@ var _user$project$Main$asciirow = function (mixed) {
 		_elm_lang$core$List$tail(
 			_elm_lang$core$Tuple$second(mixed)));
 	var dcolour = 'grey';
-	var words = _elm_lang$core$Tuple$first(mixed);
+	var _p0 = mixed;
+	var words = _p0._0;
+	var rules = _p0._1;
 	var dtotal = _elm_lang$core$String$length(words);
 	var dtotalstr = _elm_lang$core$Basics$toString(dtotal);
 	var rule = A2(
@@ -8660,13 +8662,7 @@ var _user$project$Main$asciirow = function (mixed) {
 				_1: {ctor: '[]'}
 			}
 		},
-		_elm_lang$core$List$head(
-			_elm_lang$core$Tuple$second(mixed)));
-	var colour = A2(
-		_elm_lang$core$Maybe$withDefault,
-		dcolour,
-		_elm_lang$core$List$head(
-			_elm_lang$core$List$reverse(rule)));
+		_elm_lang$core$List$head(rules));
 	var amountstr = A2(
 		_elm_lang$core$Maybe$withDefault,
 		dtotalstr,
@@ -8675,6 +8671,11 @@ var _user$project$Main$asciirow = function (mixed) {
 		_elm_lang$core$Result$withDefault,
 		dtotal,
 		_elm_lang$core$String$toInt(amountstr));
+	var colour = A2(
+		_elm_lang$core$Maybe$withDefault,
+		dcolour,
+		_elm_lang$core$List$head(
+			_elm_lang$core$List$reverse(rule)));
 	var thisstring = A3(_elm_lang$core$String$slice, 0, amount, words);
 	var otherstring = A3(_elm_lang$core$String$slice, amount, dtotal, words);
 	if (_elm_lang$core$Native_Utils.eq(dtotal, 0)) {
@@ -8782,13 +8783,13 @@ var _user$project$Main$iter = function (count) {
 };
 var _user$project$Main$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProgram(
 	function () {
-		var _p0 = _user$project$Asciimap$asciimap;
-		var xlength = _p0.xlength;
-		var ylength = _p0.ylength;
-		var padlength = _p0.padlength;
-		var padcolour = _p0.padcolour;
-		var strokes = _p0.strokes;
-		var keywords = _p0.keywords;
+		var _p1 = _user$project$Asciimap$asciimap;
+		var xlength = _p1.xlength;
+		var ylength = _p1.ylength;
+		var padlength = _p1.padlength;
+		var padcolour = _p1.padcolour;
+		var strokes = _p1.strokes;
+		var keywords = _p1.keywords;
 		var wordrows = A2(
 			_user$project$Main$dividestring,
 			xlength,
@@ -8799,7 +8800,7 @@ var _user$project$Main$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProg
 		var strokeparts = A2(_elm_lang$core$List$map, _user$project$Main$components, strokes);
 		var paddingstrokes = A2(
 			_elm_lang$core$List$map,
-			function (_p1) {
+			function (_p2) {
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
 					padcolour,

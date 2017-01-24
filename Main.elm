@@ -67,29 +67,37 @@ reduceby num list =
             |> List.drop num
 
 
+toIntOr : String -> Int -> Int
+toIntOr attempt default =
+    case toString attempt of
+        Err _ ->
+            default
+
+        Ok good ->
+            good
+
+
 asciirow : ( String, List (List String) ) -> List (Html msg)
 asciirow mixed =
     let
-        words =
-            first mixed
+        ( words, rules ) =
+            mixed
 
         dtotal =
-            String.length words
+            length words
 
-        dtotalstr =
-            toString dtotal
-
-        dcolour =
-            "grey"
-
-        rule =
-            Maybe.withDefault [ dtotalstr, dcolour ] (List.head (second mixed))
-
-        amountstr =
-            Maybe.withDefault dtotalstr (List.head rule)
-
+        -- dtotalstr =
+        --     toString dtotal
+        --
+        -- dcolour =
+        --     "grey"
+        -- rule =
+        --     Maybe.withDefault [ dtotalstr, dcolour ] (List.head rules)
+        --
+        -- amountstr =
+        --     Maybe.withDefault dtotalstr (List.head rule)
         amount =
-            Result.withDefault dtotal (toInt amountstr)
+            toIntOr () dtotal
 
         colour =
             Maybe.withDefault dcolour (List.head (List.reverse rule))
@@ -124,21 +132,15 @@ main =
                 |> elongate (areaify xlength ylength padlength)
                 |> dividestring xlength
 
-        strokeparts =
-            List.map components strokes
-
-        paddingstrokes =
-            List.map (\_ -> (padcolour ++ ", " ++ (toString xlength))) (iter padlength)
-
-        paddingparts =
-            List.map components paddingstrokes
+        padstrokes =
+            (toString xlength) ++ ", " ++ padcolour
 
         mainart =
-            List.map2 (,) (reduceby padlength wordrows) strokeparts
+            List.map2 (,) (reduceby padlength wordrows) strokes
                 |> List.map (\x -> p [] (asciirow x))
 
         paddingart =
-            List.map2 (,) (List.take padlength wordrows) paddingparts
+            List.map2 (,) (List.take padlength wordrows) padstrokes
                 |> List.map (\x -> p [] (asciirow x))
 
         spans =
