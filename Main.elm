@@ -2,8 +2,8 @@ module Main exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (class, target, href, property, defaultValue)
-import String exposing (length, repeat, left, concat, toInt)
-import List
+import String exposing (length, repeat, left, dropLeft, concat, toInt)
+import List exposing (repeat, map, length, take, drop)
 import Result
 import Maybe exposing (..)
 import Tuple exposing (first, second)
@@ -31,11 +31,11 @@ components string =
 
 elongate : Int -> String -> String
 elongate goal str =
-    if ((length str) < goal) then
+    if ((String.length str) < goal) then
         let
             new =
                 str
-                    |> repeat ((goal // (length str)) + 1)
+                    |> String.repeat ((goal // (String.length str)) + 1)
         in
             left goal new
     else
@@ -78,7 +78,7 @@ reduceby num list =
 
 toIntOr : String -> Int -> Int
 toIntOr attempt default =
-    case toString attempt of
+    case toInt attempt of
         Err _ ->
             default
 
@@ -86,48 +86,37 @@ toIntOr attempt default =
             good
 
 
-asciirow : ( String, List (List String) ) -> List (Html msg)
+asciirow : ( String, String ) -> List (Html msg)
 asciirow mixed =
     let
-        ( words, rules ) =
+        ( wordstr, rulestr ) =
             mixed
 
         dtotal =
-            length words
+            String.length wordstr
 
-        -- dtotalstr =
-        --     toString dtotal
-        --
-        -- dcolour =
-        --     "grey"
-        -- rule =
-        --     Maybe.withDefault [ dtotalstr, dcolour ] (List.head rules)
-        --
-        -- amountstr =
-        --     Maybe.withDefault dtotalstr (List.head rule)
         amount =
-            toIntOr () dtotal
+            toIntOr (findfirst rulestr "\\d*") dtotal
 
         colour =
-            Maybe.withDefault dcolour (List.head (List.reverse rule))
+            findfirst rulestr "[a-z]+"
 
-        thisstring =
-            String.slice 0 amount words
-
-        otherstring =
-            String.slice amount dtotal words
+        ( targ, rest ) =
+            ( (left amount wordstr), (dropLeft amount wordstr) )
 
         otherrules =
-            Maybe.withDefault [] (List.tail (second mixed))
+            dropLeft
+                ((String.length (toString amount)) + (String.length colour) + 3)
+                rulestr
     in
         if dtotal == 0 then
             []
         else
             let
                 stroke =
-                    span [ class colour ] [ text thisstring ]
+                    span [ class colour ] [ text targ ]
             in
-                stroke :: asciirow ( otherstring, otherrules )
+                stroke :: asciirow ( rest, otherrules )
 
 
 main : Html msg
@@ -142,7 +131,8 @@ main =
                 |> dividestring xlength
 
         padstrokes =
-            (toString xlength) ++ ", " ++ padcolour
+            iter padlength
+                |> List.map (\_ -> ((toString xlength) ++ ", " ++ padcolour))
 
         mainart =
             List.map2 (,) (reduceby padlength wordrows) strokes

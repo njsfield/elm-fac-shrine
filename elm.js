@@ -8639,45 +8639,59 @@ var _user$project$Asciimap$Asciimap = F6(
 		return {xlength: a, ylength: b, padlength: c, padcolour: d, strokes: e, keywords: f};
 	});
 
+var _user$project$Main$toIntOr = F2(
+	function (attempt, $default) {
+		var _p0 = _elm_lang$core$String$toInt(attempt);
+		if (_p0.ctor === 'Err') {
+			return $default;
+		} else {
+			return _p0._0;
+		}
+	});
+var _user$project$Main$reduceby = F2(
+	function (num, list) {
+		var length = _elm_lang$core$List$length(list);
+		return A2(
+			_elm_lang$core$List$drop,
+			num,
+			A2(_elm_lang$core$List$take, length - num, list));
+	});
+var _user$project$Main$findfirst = F2(
+	function (str, reg) {
+		var res = A2(
+			_elm_lang$core$List$map,
+			function (_) {
+				return _.match;
+			},
+			A3(
+				_elm_lang$core$Regex$find,
+				_elm_lang$core$Regex$AtMost(1),
+				_elm_lang$core$Regex$regex(reg),
+				str));
+		return _elm_lang$core$String$concat(res);
+	});
 var _user$project$Main$asciirow = function (mixed) {
-	var otherrules = A2(
-		_elm_lang$core$Maybe$withDefault,
-		{ctor: '[]'},
-		_elm_lang$core$List$tail(
-			_elm_lang$core$Tuple$second(mixed)));
-	var dcolour = 'grey';
-	var _p0 = mixed;
-	var words = _p0._0;
-	var rules = _p0._1;
-	var dtotal = _elm_lang$core$String$length(words);
-	var dtotalstr = _elm_lang$core$Basics$toString(dtotal);
-	var rule = A2(
-		_elm_lang$core$Maybe$withDefault,
-		{
-			ctor: '::',
-			_0: dtotalstr,
-			_1: {
-				ctor: '::',
-				_0: dcolour,
-				_1: {ctor: '[]'}
-			}
-		},
-		_elm_lang$core$List$head(rules));
-	var amountstr = A2(
-		_elm_lang$core$Maybe$withDefault,
-		dtotalstr,
-		_elm_lang$core$List$head(rule));
+	var _p1 = mixed;
+	var wordstr = _p1._0;
+	var rulestr = _p1._1;
+	var dtotal = _elm_lang$core$String$length(wordstr);
 	var amount = A2(
-		_elm_lang$core$Result$withDefault,
-		dtotal,
-		_elm_lang$core$String$toInt(amountstr));
-	var colour = A2(
-		_elm_lang$core$Maybe$withDefault,
-		dcolour,
-		_elm_lang$core$List$head(
-			_elm_lang$core$List$reverse(rule)));
-	var thisstring = A3(_elm_lang$core$String$slice, 0, amount, words);
-	var otherstring = A3(_elm_lang$core$String$slice, amount, dtotal, words);
+		_user$project$Main$toIntOr,
+		A2(_user$project$Main$findfirst, rulestr, '\\d*'),
+		dtotal);
+	var colour = A2(_user$project$Main$findfirst, rulestr, '[a-z]+');
+	var _p2 = {
+		ctor: '_Tuple2',
+		_0: A2(_elm_lang$core$String$left, amount, wordstr),
+		_1: A2(_elm_lang$core$String$dropLeft, amount, wordstr)
+	};
+	var targ = _p2._0;
+	var rest = _p2._1;
+	var otherrules = A2(
+		_elm_lang$core$String$dropLeft,
+		(_elm_lang$core$String$length(
+			_elm_lang$core$Basics$toString(amount)) + _elm_lang$core$String$length(colour)) + 3,
+		rulestr);
 	if (_elm_lang$core$Native_Utils.eq(dtotal, 0)) {
 		return {ctor: '[]'};
 	} else {
@@ -8690,25 +8704,17 @@ var _user$project$Main$asciirow = function (mixed) {
 			},
 			{
 				ctor: '::',
-				_0: _elm_lang$html$Html$text(thisstring),
+				_0: _elm_lang$html$Html$text(targ),
 				_1: {ctor: '[]'}
 			});
 		return {
 			ctor: '::',
 			_0: stroke,
 			_1: _user$project$Main$asciirow(
-				{ctor: '_Tuple2', _0: otherstring, _1: otherrules})
+				{ctor: '_Tuple2', _0: rest, _1: otherrules})
 		};
 	}
 };
-var _user$project$Main$reduceby = F2(
-	function (num, list) {
-		var length = _elm_lang$core$List$length(list);
-		return A2(
-			_elm_lang$core$List$drop,
-			num,
-			A2(_elm_lang$core$List$take, length - num, list));
-	});
 var _user$project$Main$dividestring = F2(
 	function (chars, string) {
 		var reg = A2(
@@ -8783,13 +8789,13 @@ var _user$project$Main$iter = function (count) {
 };
 var _user$project$Main$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProgram(
 	function () {
-		var _p1 = _user$project$Asciimap$asciimap;
-		var xlength = _p1.xlength;
-		var ylength = _p1.ylength;
-		var padlength = _p1.padlength;
-		var padcolour = _p1.padcolour;
-		var strokes = _p1.strokes;
-		var keywords = _p1.keywords;
+		var _p3 = _user$project$Asciimap$asciimap;
+		var xlength = _p3.xlength;
+		var ylength = _p3.ylength;
+		var padlength = _p3.padlength;
+		var padcolour = _p3.padcolour;
+		var strokes = _p3.strokes;
+		var keywords = _p3.keywords;
 		var wordrows = A2(
 			_user$project$Main$dividestring,
 			xlength,
@@ -8797,20 +8803,15 @@ var _user$project$Main$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProg
 				_user$project$Main$elongate,
 				A3(_user$project$Main$areaify, xlength, ylength, padlength),
 				_elm_lang$core$String$concat(keywords)));
-		var strokeparts = A2(_elm_lang$core$List$map, _user$project$Main$components, strokes);
-		var paddingstrokes = A2(
+		var padstrokes = A2(
 			_elm_lang$core$List$map,
-			function (_p2) {
+			function (_p4) {
 				return A2(
 					_elm_lang$core$Basics_ops['++'],
-					padcolour,
-					A2(
-						_elm_lang$core$Basics_ops['++'],
-						', ',
-						_elm_lang$core$Basics$toString(xlength)));
+					_elm_lang$core$Basics$toString(xlength),
+					A2(_elm_lang$core$Basics_ops['++'], ', ', padcolour));
 			},
 			_user$project$Main$iter(padlength));
-		var paddingparts = A2(_elm_lang$core$List$map, _user$project$Main$components, paddingstrokes);
 		var mainart = A2(
 			_elm_lang$core$List$map,
 			function (x) {
@@ -8826,7 +8827,7 @@ var _user$project$Main$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProg
 						return {ctor: '_Tuple2', _0: v0, _1: v1};
 					}),
 				A2(_user$project$Main$reduceby, padlength, wordrows),
-				strokeparts));
+				strokes));
 		var paddingart = A2(
 			_elm_lang$core$List$map,
 			function (x) {
@@ -8842,7 +8843,7 @@ var _user$project$Main$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProg
 						return {ctor: '_Tuple2', _0: v0, _1: v1};
 					}),
 				A2(_elm_lang$core$List$take, padlength, wordrows),
-				paddingparts));
+				padstrokes));
 		var spans = A2(
 			_elm_lang$core$Basics_ops['++'],
 			paddingart,
