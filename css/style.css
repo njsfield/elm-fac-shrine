@@ -2,9 +2,6 @@
 body {
     background: black;
 }
-p {
-    line-height: .1rem;
-}
 .pre-container {
     display: block;
     margin: 0 auto;
@@ -28,9 +25,11 @@ pre {
     white-space: pre-line;
     width: 69rem;
     height: 52rem;
+    line-height: .6rem;
     text-align: left;
     margin: 0;
 }
+
 
 
 /* Colors */

@@ -8693,7 +8693,11 @@ var _user$project$Main$asciirow = function (mixed) {
 			_elm_lang$core$Basics$toString(amount)) + _elm_lang$core$String$length(colour)) + 3,
 		rulestr);
 	if (_elm_lang$core$Native_Utils.eq(dtotal, 0)) {
-		return {ctor: '[]'};
+		return {
+			ctor: '::',
+			_0: _elm_lang$html$Html$text('\n'),
+			_1: {ctor: '[]'}
+		};
 	} else {
 		var stroke = A2(
 			_elm_lang$html$Html$span,
@@ -8812,46 +8816,47 @@ var _user$project$Main$main = _elm_lang$virtual_dom$Native_VirtualDom.staticProg
 					A2(_elm_lang$core$Basics_ops['++'], ', ', padcolour));
 			},
 			_user$project$Main$iter(padlength));
-		var mainart = A2(
-			_elm_lang$core$List$map,
-			function (x) {
-				return A2(
-					_elm_lang$html$Html$p,
-					{ctor: '[]'},
-					_user$project$Main$asciirow(x));
-			},
-			A3(
-				_elm_lang$core$List$map2,
-				F2(
-					function (v0, v1) {
-						return {ctor: '_Tuple2', _0: v0, _1: v1};
-					}),
-				A2(_user$project$Main$reduceby, padlength, wordrows),
-				strokes));
-		var paddingart = A2(
-			_elm_lang$core$List$map,
-			function (x) {
-				return A2(
-					_elm_lang$html$Html$p,
-					{ctor: '[]'},
-					_user$project$Main$asciirow(x));
-			},
-			A3(
-				_elm_lang$core$List$map2,
-				F2(
-					function (v0, v1) {
-						return {ctor: '_Tuple2', _0: v0, _1: v1};
-					}),
-				A2(_elm_lang$core$List$take, padlength, wordrows),
-				padstrokes));
-		var spans = A2(
-			_elm_lang$core$Basics_ops['++'],
-			paddingart,
-			A2(_elm_lang$core$Basics_ops['++'], mainart, paddingart));
+		var mainart = _elm_lang$core$List$concat(
+			A2(
+				_elm_lang$core$List$map,
+				_user$project$Main$asciirow,
+				A3(
+					_elm_lang$core$List$map2,
+					F2(
+						function (v0, v1) {
+							return {ctor: '_Tuple2', _0: v0, _1: v1};
+						}),
+					A2(_user$project$Main$reduceby, padlength, wordrows),
+					strokes)));
+		var paddingart = _elm_lang$core$List$concat(
+			A2(
+				_elm_lang$core$List$map,
+				_user$project$Main$asciirow,
+				A3(
+					_elm_lang$core$List$map2,
+					F2(
+						function (v0, v1) {
+							return {ctor: '_Tuple2', _0: v0, _1: v1};
+						}),
+					A2(_elm_lang$core$List$take, padlength, wordrows),
+					padstrokes)));
 		return A2(
 			_elm_lang$html$Html$span,
 			{ctor: '[]'},
-			spans);
+			_elm_lang$core$List$concat(
+				{
+					ctor: '::',
+					_0: paddingart,
+					_1: {
+						ctor: '::',
+						_0: mainart,
+						_1: {
+							ctor: '::',
+							_0: paddingart,
+							_1: {ctor: '[]'}
+						}
+					}
+				}));
 	}());
 
 var Elm = {};

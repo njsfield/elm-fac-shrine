@@ -110,7 +110,7 @@ asciirow mixed =
                 rulestr
     in
         if dtotal == 0 then
-            []
+            [ text "\n" ]
         else
             let
                 stroke =
@@ -136,13 +136,12 @@ main =
 
         mainart =
             List.map2 (,) (reduceby padlength wordrows) strokes
-                |> List.map (\x -> p [] (asciirow x))
+                |> List.map asciirow
+                |> List.concat
 
         paddingart =
             List.map2 (,) (List.take padlength wordrows) padstrokes
-                |> List.map (\x -> p [] (asciirow x))
-
-        spans =
-            paddingart ++ mainart ++ paddingart
+                |> List.map asciirow
+                |> List.concat
     in
-        span [] spans
+        span [] (List.concat [ paddingart, mainart, paddingart ])
