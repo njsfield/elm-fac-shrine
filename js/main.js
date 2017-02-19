@@ -9426,10 +9426,12 @@ var _user$project$Asciimap$asciimap = {
 	}
 };
 
-var _user$project$Main$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$none;
-};
-var _user$project$Main$toIntOr = F2(
+var _user$project$Model$Model = F6(
+	function (a, b, c, d, e, f) {
+		return {xlength: a, ylength: b, padlength: c, padcolour: d, strokes: e, keywords: f};
+	});
+
+var _user$project$GenerateAscii$toIntOr = F2(
 	function (attempt, $default) {
 		var _p0 = _elm_lang$core$String$toInt(attempt);
 		if (_p0.ctor === 'Err') {
@@ -9438,7 +9440,7 @@ var _user$project$Main$toIntOr = F2(
 			return _p0._0;
 		}
 	});
-var _user$project$Main$reduceby = F2(
+var _user$project$GenerateAscii$reduceby = F2(
 	function (num, list) {
 		var length = _elm_lang$core$List$length(list);
 		return A2(
@@ -9446,7 +9448,7 @@ var _user$project$Main$reduceby = F2(
 			num,
 			A2(_elm_lang$core$List$take, length - num, list));
 	});
-var _user$project$Main$findfirst = F2(
+var _user$project$GenerateAscii$findfirst = F2(
 	function (str, reg) {
 		var res = A2(
 			_elm_lang$core$List$map,
@@ -9460,16 +9462,16 @@ var _user$project$Main$findfirst = F2(
 				str));
 		return _elm_lang$core$String$concat(res);
 	});
-var _user$project$Main$asciirow = function (mixed) {
+var _user$project$GenerateAscii$asciirow = function (mixed) {
 	var _p1 = mixed;
 	var wordstr = _p1._0;
 	var rulestr = _p1._1;
 	var dtotal = _elm_lang$core$String$length(wordstr);
 	var amount = A2(
-		_user$project$Main$toIntOr,
-		A2(_user$project$Main$findfirst, rulestr, '\\d*'),
+		_user$project$GenerateAscii$toIntOr,
+		A2(_user$project$GenerateAscii$findfirst, rulestr, '\\d*'),
 		dtotal);
-	var colour = A2(_user$project$Main$findfirst, rulestr, '[a-z]+');
+	var colour = A2(_user$project$GenerateAscii$findfirst, rulestr, '[a-z]+');
 	var _p2 = {
 		ctor: '_Tuple2',
 		_0: A2(_elm_lang$core$String$left, amount, wordstr),
@@ -9504,12 +9506,12 @@ var _user$project$Main$asciirow = function (mixed) {
 		return {
 			ctor: '::',
 			_0: stroke,
-			_1: _user$project$Main$asciirow(
+			_1: _user$project$GenerateAscii$asciirow(
 				{ctor: '_Tuple2', _0: rest, _1: otherrules})
 		};
 	}
 };
-var _user$project$Main$dividestring = F2(
+var _user$project$GenerateAscii$dividestring = F2(
 	function (chars, string) {
 		var reg = A2(
 			_elm_lang$core$Basics_ops['++'],
@@ -9529,11 +9531,11 @@ var _user$project$Main$dividestring = F2(
 				_elm_lang$core$Regex$regex(reg),
 				string));
 	});
-var _user$project$Main$areaify = F3(
+var _user$project$GenerateAscii$areaify = F3(
 	function (x, y, p) {
 		return x * (y + (2 * p));
 	});
-var _user$project$Main$elongate = F2(
+var _user$project$GenerateAscii$elongate = F2(
 	function (goal, str) {
 		if (_elm_lang$core$Native_Utils.cmp(
 			_elm_lang$core$String$length(str),
@@ -9547,7 +9549,7 @@ var _user$project$Main$elongate = F2(
 			return A2(_elm_lang$core$String$left, goal, str);
 		}
 	});
-var _user$project$Main$components = function (string) {
+var _user$project$GenerateAscii$components = function (string) {
 	return A2(
 		_elm_lang$core$List$map,
 		function (rule) {
@@ -9563,7 +9565,7 @@ var _user$project$Main$components = function (string) {
 			_elm_lang$core$Regex$regex(', '),
 			string));
 };
-var _user$project$Main$tospan = F2(
+var _user$project$GenerateAscii$tospan = F2(
 	function (colour, words) {
 		return A2(
 			_elm_lang$html$Html$span,
@@ -9578,10 +9580,10 @@ var _user$project$Main$tospan = F2(
 				_1: {ctor: '[]'}
 			});
 	});
-var _user$project$Main$iter = function (count) {
+var _user$project$GenerateAscii$iter = function (count) {
 	return A2(_elm_lang$core$List$repeat, count, 0);
 };
-var _user$project$Main$view = function (model) {
+var _user$project$GenerateAscii$generateascii = function (model) {
 	var _p3 = model;
 	var xlength = _p3.xlength;
 	var ylength = _p3.ylength;
@@ -9590,11 +9592,11 @@ var _user$project$Main$view = function (model) {
 	var strokes = _p3.strokes;
 	var keywords = _p3.keywords;
 	var wordrows = A2(
-		_user$project$Main$dividestring,
+		_user$project$GenerateAscii$dividestring,
 		xlength,
 		A2(
-			_user$project$Main$elongate,
-			A3(_user$project$Main$areaify, xlength, ylength, padlength),
+			_user$project$GenerateAscii$elongate,
+			A3(_user$project$GenerateAscii$areaify, xlength, ylength, padlength),
 			_elm_lang$core$String$concat(keywords)));
 	var padstrokes = A2(
 		_elm_lang$core$List$map,
@@ -9604,23 +9606,23 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$core$Basics$toString(xlength),
 				A2(_elm_lang$core$Basics_ops['++'], ', ', padcolour));
 		},
-		_user$project$Main$iter(padlength));
+		_user$project$GenerateAscii$iter(padlength));
 	var mainart = _elm_lang$core$List$concat(
 		A2(
 			_elm_lang$core$List$map,
-			_user$project$Main$asciirow,
+			_user$project$GenerateAscii$asciirow,
 			A3(
 				_elm_lang$core$List$map2,
 				F2(
 					function (v0, v1) {
 						return {ctor: '_Tuple2', _0: v0, _1: v1};
 					}),
-				A2(_user$project$Main$reduceby, padlength, wordrows),
+				A2(_user$project$GenerateAscii$reduceby, padlength, wordrows),
 				strokes)));
 	var paddingart = _elm_lang$core$List$concat(
 		A2(
 			_elm_lang$core$List$map,
-			_user$project$Main$asciirow,
+			_user$project$GenerateAscii$asciirow,
 			A3(
 				_elm_lang$core$List$map2,
 				F2(
@@ -9647,20 +9649,19 @@ var _user$project$Main$view = function (model) {
 				}
 			}));
 };
-var _user$project$Main$keywordshuffler = F2(
-	function (key, model) {
-		var _p5 = model;
-		var keywords = _p5.keywords;
-		var klength = _elm_lang$core$List$length(keywords);
+
+var _user$project$ListShuffler$listshuffler = F2(
+	function (num, olist) {
+		var olength = _elm_lang$core$List$length(olist);
 		var rnums = _elm_lang$core$Tuple$first(
 			A2(
 				_elm_lang$core$Random$step,
 				A2(
 					_elm_lang$core$Random$list,
-					klength,
-					A2(_elm_lang$core$Random$int, 1, klength)),
-				_elm_lang$core$Random$initialSeed(key)));
-		var newlist = _elm_lang$core$Tuple$second(
+					olength,
+					A2(_elm_lang$core$Random$int, 1, olength)),
+				_elm_lang$core$Random$initialSeed(num)));
+		return _elm_lang$core$Tuple$second(
 			_elm_lang$core$List$unzip(
 				A2(
 					_elm_lang$core$List$sortBy,
@@ -9672,34 +9673,38 @@ var _user$project$Main$keywordshuffler = F2(
 								return {ctor: '_Tuple2', _0: v0, _1: v1};
 							}),
 						rnums,
-						keywords))));
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{keywords: newlist});
+						olist))));
 	});
+
+var _user$project$Main$view = function (model) {
+	return _user$project$GenerateAscii$generateascii(model);
+};
+var _user$project$Main$subscriptions = function (model) {
+	return _elm_lang$core$Platform_Sub$none;
+};
 var _user$project$Main$update = F2(
 	function (msg, model) {
-		var _p6 = msg;
+		var _p0 = msg;
 		return {
 			ctor: '_Tuple2',
-			_0: A2(_user$project$Main$keywordshuffler, _p6._0, model),
+			_0: _elm_lang$core$Native_Utils.update(
+				model,
+				{
+					keywords: A2(_user$project$ListShuffler$listshuffler, _p0._0, model.keywords)
+				}),
 			_1: _elm_lang$core$Platform_Cmd$none
 		};
 	});
-var _user$project$Main$Model = F6(
-	function (a, b, c, d, e, f) {
-		return {xlength: a, ylength: b, padlength: c, padcolour: d, strokes: e, keywords: f};
-	});
-var _user$project$Main$Paint = function (a) {
-	return {ctor: 'Paint', _0: a};
+var _user$project$Main$Newseed = function (a) {
+	return {ctor: 'Newseed', _0: a};
 };
 var _user$project$Main$init = {
 	ctor: '_Tuple2',
 	_0: _user$project$Asciimap$asciimap,
 	_1: A2(
 		_elm_lang$core$Random$generate,
-		_user$project$Main$Paint,
-		A2(_elm_lang$core$Random$int, 1000000, 2000000))
+		_user$project$Main$Newseed,
+		A2(_elm_lang$core$Random$int, 200, 400))
 };
 var _user$project$Main$main = _elm_lang$html$Html$program(
 	{init: _user$project$Main$init, view: _user$project$Main$view, update: _user$project$Main$update, subscriptions: _user$project$Main$subscriptions})();
