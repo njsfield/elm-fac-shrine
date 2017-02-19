@@ -10,6 +10,62 @@ import Tuple exposing (first, second)
 import Debug exposing (log)
 import Regex exposing (split, regex, find)
 import Asciimap exposing (asciimap)
+import Task exposing (..)
+import Random exposing (..)
+
+
+main =
+    Html.program
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }
+
+
+
+-- MODEL
+
+
+type alias Model =
+    { xlength : Int
+    , ylength : Int
+    , padlength : Int
+    , padcolour : String
+    , strokes : List String
+    , keywords : List String
+    }
+
+
+
+-- Init
+
+
+init : ( Model, Cmd Msg )
+init =
+    ( asciimap, Random.generate Paint (Random.int 100 200) )
+
+
+keywordshuffler : Int -> Model -> Model
+keywordshuffler key model =
+    let
+        { keywords } =
+            model
+
+        klength =
+            List.length keywords
+
+        rnums =
+            Random.step (Random.list klength (Random.int 1 klength)) (Random.initialSeed key)
+                |> Tuple.first
+
+        newlist =
+            List.map2 (,) rnums keywords
+                |> List.sortBy Tuple.first
+                |> List.unzip
+                |> Tuple.second
+    in
+        { model | keywords = newlist }
 
 
 iter : Int -> List Int
@@ -119,11 +175,39 @@ asciirow mixed =
                 stroke :: asciirow ( rest, otherrules )
 
 
-main : Html msg
-main =
+
+-- UPDATE
+
+
+type Msg
+    = Paint Int
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    case msg of
+        Paint num ->
+            ( keywordshuffler num model, Cmd.none )
+
+
+
+-- SUBSCRIPTIONS
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
+
+
+
+-- VIEW
+
+
+view : Model -> Html Msg
+view model =
     let
         { xlength, ylength, padlength, padcolour, strokes, keywords } =
-            asciimap
+            model
 
         wordrows =
             concat keywords

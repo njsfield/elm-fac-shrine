@@ -1,17 +1,6 @@
 module Asciimap exposing (asciimap)
 
 
-type alias Asciimap =
-    { xlength : Int
-    , ylength : Int
-    , padlength : Int
-    , padcolour : String
-    , strokes : List String
-    , keywords : List String
-    }
-
-
-asciimap : Asciimap
 asciimap =
     { xlength = 115
     , ylength = 26
